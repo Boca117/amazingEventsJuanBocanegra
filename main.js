@@ -1,3 +1,4 @@
+
 let events = [
     {
       "_id": 1,
@@ -84,6 +85,8 @@ let events = [
       "price": 250
     },
   ]
+
+
 let contenedor = document.getElementById("contenedor")
 
 for (let i = 0; i < events.length; i++) {
