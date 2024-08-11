@@ -195,22 +195,54 @@ const data = {
   ],
 };
 
-
-let contenedor = document.getElementById("contenedor")
-
-for (let i = 0; i < data.events.length; i++) {
-    let card = document.createElement("div")
-    card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
-    card.innerHTML = `
-    <img src="${data.events[i].image}" class="card-img-top" >
-                  <div class="card-body text-center">
-                    <h5 class="card-title">${data.events[i].name}</h5>
-                    <p class="card-text">${data.events[i].description}</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <p class="card-text mb-0">Price: $${data.events[i].price}</p>
-                      <a href="./pages/details.html" class="btn btn-primary">Details</a>
-                    </div>
-                  </div>`
-    
-    contenedor.appendChild(card)
+function mostrarCards(cards) {
+  let contenedor = document.getElementById("contenedor")
+  let card = document.createElement("div")
+  card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
+  card.innerHTML = `
+  <img src="${cards.image}" class="card-img-top" >
+                <div class="card-body text-center">
+                  <h5 class="card-title">${cards.name}</h5>
+                  <p class="card-text">${cards.description}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <p class="card-text mb-0">Price: $${cards.price}</p>
+                    <a href="./pages/details.html" class="btn btn-primary">Details</a>
+                  </div>
+                </div>`
+  
+  contenedor.appendChild(card)
 }
+
+
+function categorias(checks) {
+  let filtros = document.getElementById("filtros")
+
+  let categoriasUnicas = Array.from(new Set(checks.map(event => event.category)));
+  categoriasUnicas.forEach(categoria => {
+    
+    let check = document.createElement("div")
+    check.className = "form-check d-flex align-items-center flex-wrap gap-2"
+    check.innerHTML = `
+      <div class="d-flex gap-2">
+        <input id="${categoria}" class="form-check-input" type="checkbox" value="${categoria}" >
+        <label class="form-check-label" for="${categoria}">
+          ${categoria}
+        </label>
+      </div>
+    `
+    filtros.appendChild(check)
+
+  })
+}
+
+function actualizarCards(cards) {
+  contenedor.innerHTML = "";
+  if (cards.length === 0) {
+      contenedor.innerHTML = "<p class='text-center'>NO HAY EVENTOS COMO EL QUE SOLICITASTE</p>";
+  } else {
+      cards.forEach(card => mostrarCards(card));
+  }
+}
+
+actualizarCards(data.events)
+categorias(data.events)
