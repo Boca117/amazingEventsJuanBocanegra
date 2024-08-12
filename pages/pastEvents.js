@@ -200,20 +200,79 @@ const pastEvents = data.events.filter(event => {
   const fechaActual = new Date(data.currentDate);
   return fechaEvento < fechaActual;
 });
+data.events = pastEvents; 
 
-for (let i = 0; i < pastEvents.length; i++) {
-  let card = document.createElement("div")
-  card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
-  card.innerHTML = `
-  <img src="${pastEvents[i].image}" class="card-img-top" >
-                <div class="card-body text-center">
-                  <h5 class="card-title">${pastEvents[i].name}</h5>
-                  <p class="card-text">${pastEvents[i].description}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="card-text mb-0">Price: $${pastEvents[i].price}</p>
-                    <a href="./pages/details.html" class="btn btn-primary">Details</a>
-                  </div>
-                </div>`
-  
-  contenedor.appendChild(card)
+
+function mostrarCards(cards) {
+let contenedor = document.getElementById("contenedor")
+let card = document.createElement("div")
+card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
+card.innerHTML = `
+<img src="${cards.image}" class="card-img-top" >
+              <div class="card-body text-center">
+                <h5 class="card-title">${cards.name}</h5>
+                <p class="card-text">${cards.description}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <p class="card-text mb-0">Price: $${cards.price}</p>
+                  <a href="./pages/details.html" class="btn btn-primary">Details</a>
+                </div>
+              </div>`
+
+contenedor.appendChild(card) 
 }
+
+function categorias(checks) {
+  let filtros = document.getElementById("filtros")
+
+  let categoriasUnicas = Array.from(new Set(checks.map(event => event.category)));
+  categoriasUnicas.forEach(categoria => {
+    let check = document.createElement("div")
+    check.className = "form-check d-flex align-items-center flex-wrap gap-2"
+    check.innerHTML = `
+      <div class="d-flex gap-2">
+        <input id="${categoria}" class="form-check-input" type="checkbox" value="${categoria}" onclick=filtrarPorCategoria(data.events)">
+        <label class="form-check-label" for="${categoria}">
+          ${categoria}
+        </label>
+      </div>
+    `
+    filtros.appendChild(check)
+  });
+}
+
+
+
+function actualizarCards(cards) {
+  let contenedor = document.getElementById("contenedor");
+  contenedor.innerHTML = "";
+  if (cards.length === 0) {
+      contenedor.innerHTML = "<p class='text-center p-5 bg-dark text-light rounded fw-bold'>NO HAY EVENTOS COMO EL QUE BUSCAS EN ESTE MOMENTO</p>";
+  } else {
+      cards.forEach(card => mostrarCards(card));
+  }
+}
+
+
+function filtrarPorCategoria(events) {
+  let checkeados = Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(check => check.value);
+  let filtrados = events.filter(event => checkeados.length === 0 || checkeados.includes(event.category));
+  return filtrados;
+}
+
+
+
+function filtrarPorBuscador(events) {
+  let busqueda = document.getElementById("input_buscador").value.toLowerCase();
+  let filtrados = filtrarPorCategoria(events);
+  if (busqueda) {
+    filtrados = filtrados.filter(card => card.name.toLowerCase().includes(busqueda) || card.description.toLowerCase().includes(busqueda));
+  }
+  actualizarCards(filtrados);
+}
+
+document.getElementById("filtros").addEventListener("change", () => filtrarPorBuscador(data.events))
+document.getElementById("button").addEventListener("click", () => filtrarPorBuscador(data.events))
+
+
+actualizarCards(data.events)
+categorias(data.events)

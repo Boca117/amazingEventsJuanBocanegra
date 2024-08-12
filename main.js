@@ -219,30 +219,53 @@ function categorias(checks) {
 
   let categoriasUnicas = Array.from(new Set(checks.map(event => event.category)));
   categoriasUnicas.forEach(categoria => {
-    
     let check = document.createElement("div")
     check.className = "form-check d-flex align-items-center flex-wrap gap-2"
     check.innerHTML = `
       <div class="d-flex gap-2">
-        <input id="${categoria}" class="form-check-input" type="checkbox" value="${categoria}" >
+        <input id="${categoria}" class="form-check-input" type="checkbox" value="${categoria}" onclick=filtrarPorCategoria(data.events)">
         <label class="form-check-label" for="${categoria}">
           ${categoria}
         </label>
       </div>
     `
     filtros.appendChild(check)
-
-  })
+  });
 }
 
+
+
 function actualizarCards(cards) {
+  let contenedor = document.getElementById("contenedor");
   contenedor.innerHTML = "";
   if (cards.length === 0) {
-      contenedor.innerHTML = "<p class='text-center'>NO HAY EVENTOS COMO EL QUE SOLICITASTE</p>";
+      contenedor.innerHTML = "<p class='text-center p-5 bg-dark text-light rounded fw-bold'>NO HAY EVENTOS COMO EL QUE BUSCAS EN ESTE MOMENTO</p>";
   } else {
       cards.forEach(card => mostrarCards(card));
   }
 }
+
+
+function filtrarPorCategoria(events) {
+  let checkeados = Array.from(document.querySelectorAll("input[type=checkbox]:checked")).map(check => check.value);
+  let filtrados = events.filter(event => checkeados.length === 0 || checkeados.includes(event.category));
+  return filtrados;
+}
+
+
+
+function filtrarPorBuscador(events) {
+  let busqueda = document.getElementById("input_buscador").value.toLowerCase();
+  let filtrados = filtrarPorCategoria(events);
+  if (busqueda) {
+    filtrados = filtrados.filter(card => card.name.toLowerCase().includes(busqueda) || card.description.toLowerCase().includes(busqueda));
+  }
+  actualizarCards(filtrados);
+}
+
+document.getElementById("filtros").addEventListener("change", () => filtrarPorBuscador(data.events))
+document.getElementById("button").addEventListener("click", () => filtrarPorBuscador(data.events))
+
 
 actualizarCards(data.events)
 categorias(data.events)
