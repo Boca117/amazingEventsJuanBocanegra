@@ -201,16 +201,20 @@ function mostrarCards(cards) {
   card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
   card.innerHTML = `
   <img src="${cards.image}" class="card-img-top" >
-                <div class="card-body text-center">
-                  <h5 class="card-title">${cards.name}</h5>
-                  <p class="card-text">${cards.description}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <p class="card-text mb-0">Price: $${cards.price}</p>
-                    <a href="./pages/details.html" class="btn btn-primary">Details</a>
-                  </div>
-                </div>`
+  <div class="card-body text-center">
+    <h5 class="card-title">${cards.name}</h5>
+    <p class="card-text">${cards.description}</p>
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="card-text mb-0">Price: $${cards.price}</p>
+      <button class="btn btn-primary" onclick="redirigirADetalles('${cards._id}')">Details</button>
+    </div>
+  </div>`
   
   contenedor.appendChild(card)
+}
+
+function redirigirADetalles(eventId) {
+  window.location.href = `./pages/details.html?id=${eventId}`;
 }
 
 
@@ -239,7 +243,7 @@ function actualizarCards(cards) {
   let contenedor = document.getElementById("contenedor");
   contenedor.innerHTML = "";
   if (cards.length === 0) {
-      contenedor.innerHTML = "<p class='text-center p-5 bg-dark text-light rounded fw-bold'>NO HAY EVENTOS COMO EL QUE BUSCAS EN ESTE MOMENTO</p>";
+      contenedor.innerHTML = "<p class='text-center p-5 bg-dark text-light rounded fw-bold'>THERE ARE NOT EVENTS LIKE THAT IN THIS MOMENT</p>";
   } else {
       cards.forEach(card => mostrarCards(card));
   }
@@ -251,7 +255,6 @@ function filtrarPorCategoria(events) {
   let filtrados = events.filter(event => checkeados.length === 0 || checkeados.includes(event.category));
   return filtrados;
 }
-
 
 
 function filtrarPorBuscador(events) {

@@ -214,13 +214,16 @@ card.innerHTML = `
                 <p class="card-text">${cards.description}</p>
                 <div class="d-flex justify-content-between align-items-center">
                   <p class="card-text mb-0">Price: $${cards.price}</p>
-                  <a href="./pages/details.html" class="btn btn-primary">Details</a>
+                  <button class="btn btn-primary" onclick="redirigirADetalles('${cards._id}')">Details</button>
                 </div>
               </div>`
 
 contenedor.appendChild(card) 
 }
 
+function redirigirADetalles(eventId) {
+  window.location.href = `./details.html?id=${eventId}`;
+}
 function categorias(checks) {
   let filtros = document.getElementById("filtros")
 
