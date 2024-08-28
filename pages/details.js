@@ -221,7 +221,7 @@ function cardDetails(event) {
 }
 window.onload = function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const eventId = urlParams.get('id'); // Asegúrate de que la URL use 'id' en lugar de '_id'
+    const eventId = urlParams.get('id'); 
 
     if (eventId) {
         const event = data.events.find(e => e._id === eventId);
