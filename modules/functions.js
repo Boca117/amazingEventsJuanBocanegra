@@ -7,17 +7,16 @@ export function mostrarCards(cards) {
     card.className = "card col-10 col-md-5 col-lg-3 col-xl-2"
     card.innerHTML = `
     <img src="${cards.image}" class="card-img-top" >
-    <div class="card-body text-center">
+    <div class="card-body text-center d-flex flex-column justify-content-between">
       <h5 class="card-title">${cards.name}</h5>
       <p class="card-text">${cards.description}</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <p class="card-text mb-0">Price: $${cards.price}</p>
+      <div class="d-flex justify-content-around align-items-center">
+        <p class="fw-bold m-0">Price: $${cards.price}</p>
         <button class="btn btn-primary" onclick="redirigirADetalles('${cards._id}')">Details</button>
       </div>
     </div>`
     
-    contenedor.appendChild(card)
-    
+    contenedor.appendChild(card)   
 }
 
 function redirigirADetalles(eventId) {
