@@ -20,10 +20,11 @@ export function mostrarCards(cards) {
     
 }
 
-export function redirigirADetalles(eventId) {
+function redirigirADetalles(eventId) {
     window.location.href = `./pages/details.html?id=${eventId}`;
 }
 window.redirigirADetalles = redirigirADetalles;
+
 export function categorias(checks) {
     let filtros = document.getElementById("filtros")
   

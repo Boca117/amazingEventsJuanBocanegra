@@ -17,3 +17,7 @@ fetch(functions.url)
     functions.inicializar(data)
 
 })
+function redirigirADetalles(eventId) {
+  window.location.href = `./details.html?id=${eventId}`;
+}
+window.redirigirADetalles = redirigirADetalles;

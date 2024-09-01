@@ -38,3 +38,6 @@
 tr {
     height: 2rem;
 }
+table, thead, th, tbody, td {
+    width: 33.33%; /* Un tercio del ancho total */
+}
